@@ -9,7 +9,7 @@ class RecentSearchs extends StatelessWidget {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) => ListTile(
-          leading: Icon(Icons.find_replace_outlined, color: Colors.white38),
+          leading: const Icon(Icons.find_replace_outlined, color: Colors.white38),
           onTap: () => context.pushNamed('search'),
           title: const Text(
             "Recent searchs",

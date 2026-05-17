@@ -1,53 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:tech_node/core/custom/custom_text_style.dart';
+import 'package:tech_node/core/commen/providers/bool_keepalive_notifier.dart';
+import 'package:tech_node/view/home/widgets/explore/explore_search_bar.dart';
 import 'package:tech_node/view/home/widgets/profile_menu_lists.dart';
 
-class HomeAppBar extends StatelessWidget {
+class HomeAppBar extends ConsumerWidget {
   const HomeAppBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isSearching = ref.watch(boolKeepaliveProvider('isSearching'));
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
+      height: 60,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const CustomTextStyle(
-                text: "Welcome Back",
-                fontSize: 22,
-                fontWeight: FontWeight.w900,
-                textColor: Colors.white,
-              ),
-              const SizedBox(height: 4),
-              CustomTextStyle(
-                text: "Explore the world",
-                fontSize: 12,
-                textColor: Colors.white.withValues(alpha: 0.6),
-              ),
-              const SizedBox(height: 5),
-            ],
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            width: isSearching ? 0 : 40,
+            child: Opacity(
+              opacity: isSearching ? 0 : 1,
+              child: const ProfileMenuLists(),
+            ),
           ),
 
-          Row(
-            children: [
-              IconButton(
+          Expanded(
+            child: AnimatedPadding(
+              duration: const Duration(milliseconds: 300),
+              padding: EdgeInsets.symmetric(horizontal: isSearching ? 0 : 10),
+              child: ExploreSearchBar(
+                isSearching: isSearching,
+                onTap: () => ref
+                    .read(boolKeepaliveProvider('isSearching').notifier)
+                    .setTrue(),
+                onClose: () => ref
+                    .read(boolKeepaliveProvider('isSearching').notifier)
+                    .toggle(),
+              ),
+            ),
+          ),
+
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            width: isSearching ? 0 : 40,
+            child: Opacity(
+              opacity: isSearching ? 0 : 1,
+              child: IconButton(
+                padding: const .all(0),
+                constraints: const BoxConstraints(),
                 icon: const Icon(
                   LucideIcons.bell,
-                  color: Colors.white,
                   size: 20,
+                  color: Colors.white,
                 ),
-                onPressed: () => context.pushNamed('notification'),
+                onPressed: () {
+                  if (!context.mounted) return;
+                  context.push('/notification_page');
+                },
               ),
-              const SizedBox(width: 8),
-
-              const ProfileMenuLists(),
-            ],
+            ),
           ),
         ],
       ),

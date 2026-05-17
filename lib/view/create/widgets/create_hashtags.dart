@@ -1,51 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tech_node/core/constants/themes.dart';
 import 'package:tech_node/core/custom/custom_text_style.dart';
+import 'package:tech_node/data/viewModel/ui/ui%20blog%20data/ui_data_provider.dart';
 
-class CreateHashtags extends HookWidget {
+class CreateHashtags extends ConsumerWidget {
   const CreateHashtags({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final hashtags = useState<List<String>>([]);
-    final hashController = useTextEditingController();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final hashNotifier = ref.read(uiDataProviderProvider.notifier);
+    final hashtags = ref.watch(
+      uiDataProviderProvider.select((tag) => tag.listOfHashtags),
+    );
+    final hashController = hashNotifier.hastagsController;
     void addHashtags(String value) {
       String cleanTag = value.trim().replaceAll(RegExp(r'[^\w]'), '');
-      if (cleanTag.length > 16) {
-        cleanTag = cleanTag.substring(0, 16);
-      }
-      if (cleanTag.isNotEmpty && !hashtags.value.contains(cleanTag)) {
-        hashtags.value = [...hashtags.value, cleanTag];
-        hashController.clear();
-      } else {
+      if (cleanTag.length > 16) cleanTag = cleanTag.substring(0, 16);
+      if (cleanTag.isNotEmpty) {
+        hashNotifier.addBlogHashtags(cleanTag);
         hashController.clear();
       }
     }
 
     return Padding(
-      padding: .only(left: 16, right: 16, bottom: 16),
+      padding: const .only(left: 16, right: 16, bottom: 16),
       child: Column(
         crossAxisAlignment: .start,
         children: [
-          CustomTextStyle(
+          const CustomTextStyle(
             text: 'Hashtags',
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           TextField(
             controller: hashController,
-            readOnly: hashtags.value.length == 6,
+            readOnly: hashtags!.length == 6,
             decoration: InputDecoration(
-              hintText: hashtags.value.length >= 6
+              hintText: hashtags.length >= 6
                   ? 'Maximum 6 tags reached'
                   : "Type tag (16 char only) and press space or enter...",
-              prefixText: hashtags.value.length >= 6 ? '' : "#",
+              prefixText: hashtags.length >= 6 ? '' : "#",
               hintStyle: TextStyle(
-                color: hashtags.value.length >= 6
-                    ? Colors.redAccent
-                    : Colors.white70,
+                color: hashtags.length >= 6 ? Colors.redAccent : Colors.white70,
                 fontSize: 14,
               ),
               enabledBorder: InputBorder.none,
@@ -55,9 +53,9 @@ class CreateHashtags extends HookWidget {
             onSubmitted: addHashtags,
 
             onChanged: (value) {
-              if (value.endsWith(' ') && hashtags.value.length < 6) {
+              if (value.endsWith(' ') && hashtags.length < 6) {
                 addHashtags(value);
-              } else if (hashtags.value.length >= 6) {
+              } else if (hashtags.length >= 6) {
                 hashController.clear();
               }
             },
@@ -66,16 +64,14 @@ class CreateHashtags extends HookWidget {
           Wrap(
             spacing: 10,
             runSpacing: 6,
-            children: hashtags.value.map((tag) {
+            children: hashtags.map((tag) {
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () => hashtags.value = hashtags.value
-                    .where((t) => t != tag)
-                    .toList(),
+                onTap: () => hashNotifier.removeBlogHashtags(tag),
                 child: Container(
                   padding: const .symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: primary.withValues(alpha: 0.1),
+                    color: context.primary.withValues(alpha: 0.1),
                     borderRadius: .circular(12),
                   ),
                   child: Row(
@@ -84,13 +80,13 @@ class CreateHashtags extends HookWidget {
                       CustomTextStyle(
                         text: '#$tag',
                         fontSize: 15,
-                        textColor: primary,
+                        textColor: context.primary,
                       ),
                       const SizedBox(width: 4),
                       Icon(
                         Icons.close,
                         size: 14,
-                        color: primary.withValues(alpha: 0.6),
+                        color: context.primary.withValues(alpha: 0.6),
                       ),
                     ],
                   ),

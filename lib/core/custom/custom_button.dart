@@ -29,13 +29,11 @@ class CustomButton extends StatelessWidget {
       width: width,
       height: height ?? 60,
       decoration: BoxDecoration(
-        color: backgroundColor == Colors.transparent ? Colors.white30 : primary,
+        color: backgroundColor == Colors.transparent
+            ? Colors.transparent
+            : context.primary,
         border: backgroundColor == Colors.transparent
-            ? Border.all(
-                color: Theme.of(
-                  context,
-                ).colorScheme.onSurface.withValues(alpha: 0.2),
-              )
+            ? Border.all(color: Colors.white.withValues(alpha: 0.2))
             : null,
         borderRadius: BorderRadius.circular(10),
       ),

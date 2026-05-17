@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:tech_node/app/app.dart';
+import 'package:tech_node/core/commen/widgets/view_author_profile.dart';
 import 'package:tech_node/core/constants/themes.dart';
 import 'package:tech_node/core/custom/custom_text_style.dart';
+import 'package:tech_node/data%20local/local%20Models/offline_blogs_model.dart';
+import 'package:tech_node/view/Library/offline%20detail/view_offline_blog_detail.dart';
 import 'package:tech_node/view/auth/forgot%20password/forgot_password.dart';
+import 'package:tech_node/view/auth/forgot%20password/reset_password_page.dart';
 import 'package:tech_node/view/auth/login%20page/login_page.dart';
 import 'package:tech_node/view/auth/register%20page/register_page.dart';
 import 'package:tech_node/view/create/create_page.dart';
 import 'package:tech_node/view/detail%20post/detail_post_page.dart';
-import 'package:tech_node/view/exploare/exploare_page.dart';
 import 'package:tech_node/view/exploare/widgets/search%20page/search_page.dart';
+import 'package:tech_node/view/followings/following_page.dart';
 import 'package:tech_node/view/home/home_page.dart';
 import 'package:tech_node/view/notification/notification_page.dart';
 import 'package:tech_node/view/profile/profile_page.dart';
 import 'package:tech_node/view/profile/widgets/edit_profile_page.dart';
-import 'package:tech_node/view/saved/saved_page.dart';
+import 'package:tech_node/view/Library/library_page.dart';
 import 'package:tech_node/view/settings/setting_page.dart';
 
 final GoRouter appRoutes = GoRouter(
@@ -38,7 +43,7 @@ final GoRouter appRoutes = GoRouter(
             ),
             const SizedBox(height: 24),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: primary),
+              style: ElevatedButton.styleFrom(backgroundColor: context.primary),
               onPressed: () {
                 if (context.canPop()) {
                   context.pop();
@@ -77,7 +82,7 @@ final GoRouter appRoutes = GoRouter(
             GoRoute(
               path: '/explore',
               pageBuilder: (context, state) =>
-                  const NoTransitionPage(child: ExplorePage()),
+                  const NoTransitionPage(child: FollowingPage()),
             ),
           ],
         ),
@@ -86,7 +91,7 @@ final GoRouter appRoutes = GoRouter(
             GoRoute(
               path: '/saved',
               pageBuilder: (context, state) =>
-                  const NoTransitionPage(child: SavedPage()),
+                  const NoTransitionPage(child: LibraryPage()),
             ),
           ],
         ),
@@ -102,7 +107,7 @@ final GoRouter appRoutes = GoRouter(
       ],
     ),
     GoRoute(
-      path: '/detail_page/:id',
+      path: '/detail-posts/:id',
       builder: (context, state) {
         final id = state.pathParameters['id'] ?? 'none';
         return DetailPostPage(postId: id);
@@ -116,7 +121,22 @@ final GoRouter appRoutes = GoRouter(
     GoRoute(
       path: '/search_page',
       name: 'search',
-      builder: (context, state) => const SearchPage(),
+      pageBuilder: (context, state) => CustomTransitionPage(
+        child: const SearchPage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+      ),
+    ),
+    GoRoute(
+      path: '/offline_detail/:blogId',
+      name: 'offline_detail',
+      builder: (context, state) {
+        final blogId = state.pathParameters['blogId']!;
+        final box = Hive.box<OfflineBlogsModel>('downloaded_articles');
+        final blog = box.get(int.parse(blogId));
+        return ViewOfflineBlogDetail(theBlog: blog!);
+      },
     ),
     GoRoute(
       path: '/profile_page',
@@ -151,6 +171,23 @@ final GoRouter appRoutes = GoRouter(
       path: '/notification_page',
       name: 'notification',
       builder: (context, state) => const NotificationPage(),
+    ),
+    GoRoute(
+      path: '/author-profile/:id',
+      name: 'authorProfile',
+      builder: (context, state) {
+        final authorID = state.pathParameters['id'] ?? '';
+        return ViewAuthorProfile(authorID: authorID);
+      },
+    ),
+    GoRoute(
+      path: '/password-reset/:token',
+      name: 'reset_password',
+      builder: (context, state) {
+        final token = state.pathParameters['token'];
+        final email = state.uri.queryParameters['email'];
+        return ResetPasswordPage(email: email ?? '', token: token ?? '');
+      },
     ),
   ],
 );

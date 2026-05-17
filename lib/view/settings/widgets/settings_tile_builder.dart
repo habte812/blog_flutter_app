@@ -35,12 +35,12 @@ class SettingsTileBuilder extends StatelessWidget {
         leading: Container(
           padding: const .all(8),
           decoration: BoxDecoration(
-            color: primary.withValues(alpha: 0.1),
+            color: context.primary.withValues(alpha: 0.1),
             borderRadius: .circular(8),
           ),
           child: Icon(
             icon,
-            color: textColor == Colors.white ? primary : textColor,
+            color: textColor == Colors.white ? context.primary : textColor,
             size: 22,
           ),
         ),

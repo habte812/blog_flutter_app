@@ -27,13 +27,19 @@ class AppMenu extends HookWidget {
     final scaffoldKey = useMemoized(() => GlobalKey<ScaffoldState>());
     final isVisible = useState<bool>(true);
     final homeController = useScrollController();
-    final exploareController = useScrollController();
+    final followingController = useScrollController();
+    final savedController = useScrollController();
+    final sattingController = useScrollController();
 
     useEffect(() {
       void listener() {
         final activeController = selectedIndex.value == 0
             ? homeController
-            : exploareController;
+            : selectedIndex.value == 1
+            ? followingController
+            : selectedIndex.value == 2
+            ? savedController
+            : sattingController;
         if (!activeController.hasClients) return;
         if (activeController.position.userScrollDirection ==
             ScrollDirection.reverse) {
@@ -45,15 +51,22 @@ class AppMenu extends HookWidget {
       }
 
       homeController.addListener(listener);
-      exploareController.addListener(listener);
+      followingController.addListener(listener);
+      savedController.addListener(listener);
+      sattingController.addListener(listener);
+
       return () {
         homeController.removeListener(listener);
-        exploareController.removeListener(listener);
+        followingController.removeListener(listener);
+        savedController.removeListener(listener);
+        sattingController.removeListener(listener);
       };
     }, [selectedIndex.value]);
     return ScrollProvider(
       homeController: homeController,
-      exploreController: exploareController,
+      followingController: followingController,
+      libraryController: savedController,
+      sattingController: sattingController,
       child: Scaffold(
         key: scaffoldKey,
         extendBody: true,
@@ -84,18 +97,18 @@ class AppMenu extends HookWidget {
                               scrollController: homeController,
                             ),
                             NavigationIconLable(
-                              icon: LucideIcons.search,
-                              lable: 'Exploare',
+                              icon: LucideIcons.users,
+                              lable: 'Following',
                               selectedIndex: selectedIndex,
                               level: 1,
-                              scrollController: exploareController,
+                              scrollController: followingController,
                             ),
-      
+
                             const SizedBox(width: 40),
-      
+
                             NavigationIconLable(
-                              icon: LucideIcons.bookmark,
-                              lable: 'Saved',
+                              icon: LucideIcons.library,
+                              lable: 'Library',
                               selectedIndex: selectedIndex,
                               level: 2,
                             ),
@@ -113,8 +126,8 @@ class AppMenu extends HookWidget {
                         child: FloatingActionButton(
                           elevation: 4,
                           shape: const CircleBorder(),
-                          onPressed: () => context.pushNamed('create'),
-                          backgroundColor: primary,
+                          onPressed: () => context.push('/create_post'),
+                          backgroundColor: context.primary,
                           child: const Icon(
                             LucideIcons.plus,
                             color: Colors.white,
@@ -188,7 +201,7 @@ class NavigationIconLable extends StatelessWidget {
             Icon(
               icon,
               color: selectedIndex.value == level
-                  ? primary
+                  ? context.primary
                   : Colors.white.withValues(alpha: 0.7),
               size: 20,
             ),
@@ -196,7 +209,7 @@ class NavigationIconLable extends StatelessWidget {
               text: lable,
               fontSize: 14,
               textColor: selectedIndex.value == level
-                  ? primary
+                  ? context.primary
                   : Colors.white.withValues(alpha: 0.7),
               fontWeight: FontWeight.bold,
             ),

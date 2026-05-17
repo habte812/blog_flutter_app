@@ -4,7 +4,7 @@ class CustomTextStyle extends StatelessWidget {
   final String text;
   final Color? textColor;
   final FontWeight? fontWeight;
-  final double fontSize;
+  final double? fontSize;
   final int? maxLine;
   final TextOverflow? overflow;
   final TextAlign? textAlign;
@@ -16,7 +16,7 @@ class CustomTextStyle extends StatelessWidget {
     this.fontFamily,
     required this.text,
     this.textColor,
-    required this.fontSize,
+     this.fontSize,
     this.fontWeight,
     this.maxLine,
     this.overflow,
@@ -32,13 +32,17 @@ class CustomTextStyle extends StatelessWidget {
       textAlign: textAlign,
       maxLines: maxLine,
       overflow: overflow,
+      
       style: TextStyle(
+        // fontFamily: 'Georgia',
         decoration: decoration,
         color: textColor ?? Colors.white,
-        fontSize: fontSize,
+        fontSize: fontSize ??14,
         fontWeight: fontWeight,
         overflow: overflow,
         letterSpacing: letterSpacing,
+        
+        
       ),
     );
   }

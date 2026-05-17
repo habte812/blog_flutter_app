@@ -17,17 +17,17 @@ class ExploareAppBar extends StatelessWidget {
         onTap: () => context.pushNamed('search'),
         child: Container(
           width: double.infinity,
-          margin: .symmetric(horizontal: 8, vertical: 8),
-          padding: .all(10),
+          margin: const .symmetric(horizontal: 8, vertical: 8),
+          padding: const .all(10),
           decoration: BoxDecoration(
             color: Colors.white.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(10),
           ),
 
-          child: Row(
+          child: const Row(
             children: [
               Icon(LucideIcons.search, color: Colors.white38),
-              const SizedBox(width: 10),
+              SizedBox(width: 10),
               CustomTextStyle(
                 text: 'Search blogs, authors...',
                 fontSize: 15,

@@ -1,35 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:tech_node/core/constants/themes.dart';
 import 'package:tech_node/core/custom/custom_text_style.dart';
 
 class CustomBannerCard extends StatelessWidget {
-  const CustomBannerCard({super.key});
+  final String title;
+  final String subTitle;
+  final IconData prefixIcon;
+  final IconData buttonIcon;
+  final String buttonTitle;
+  final VoidCallback onPressed;
+  final Color? color;
+  const CustomBannerCard({
+    super.key,
+    required this.title,
+    required this.subTitle,
+    required this.prefixIcon,
+    required this.buttonIcon,
+    required this.buttonTitle,
+    required this.onPressed,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      color: primary,
+      color: color ?? context.primary,
       child: Row(
         children: [
-          const Icon(LucideIcons.mailWarning, color: Colors.white, size: 24),
+          Icon(prefixIcon, color: Colors.white, size: 24),
           const SizedBox(width: 12),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 CustomTextStyle(
-                  text: "Verify your email",
+                  text: title,
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                   textColor: Colors.white,
                 ),
                 Expanded(
                   child: CustomTextStyle(
-                    text: "Please check your inbox to continue.",
+                    text: subTitle,
                     overflow: TextOverflow.ellipsis,
                     maxLine: 1,
                     fontSize: 12,
@@ -40,13 +54,9 @@ class CustomBannerCard extends StatelessWidget {
             ),
           ),
           TextButton.icon(
-            label: const CustomTextStyle(text: "Resend", fontSize: 16),
-            icon: const Icon(
-              LucideIcons.refreshCcw,
-              size: 18,
-              color: Colors.white70,
-            ),
-            onPressed: () =>context.pushNamed('login'),
+            label: CustomTextStyle(text: buttonTitle, fontSize: 16),
+            icon: Icon(buttonIcon, size: 18, color: Colors.white70),
+            onPressed: onPressed,
           ),
         ],
       ),
@@ -54,15 +64,15 @@ class CustomBannerCard extends StatelessWidget {
   }
 }
 
-class PersistentBannerDelegate extends SliverPersistentHeaderDelegate {
+class PersistentHeaderDelegate extends SliverPersistentHeaderDelegate {
   final Widget child;
-
-  PersistentBannerDelegate({required this.child});
+  final double? extent;
+  PersistentHeaderDelegate({required this.child, this.extent});
 
   @override
-  double get minExtent => 72.0;
+  double get minExtent => extent ?? 72.0;
   @override
-  double get maxExtent => 72.0;
+  double get maxExtent => extent ?? 72.0;
 
   @override
   Widget build(
@@ -70,11 +80,11 @@ class PersistentBannerDelegate extends SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
-    return child;
+    return SizedBox(height: extent ?? 72, child: child);
   }
 
   @override
-  bool shouldRebuild(covariant PersistentBannerDelegate oldDelegate) {
+  bool shouldRebuild(covariant PersistentHeaderDelegate oldDelegate) {
     return true;
   }
 }

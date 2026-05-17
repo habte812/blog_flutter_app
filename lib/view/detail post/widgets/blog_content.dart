@@ -1,17 +1,29 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:tech_node/core/custom/custom_text_style.dart';
+import 'package:flutter_quill/flutter_quill.dart';
+import 'package:tech_node/data/model/blog/blogs_detail_model.dart';
+import 'package:tech_node/view/create/widgets/blog%20content/quill_editor_configration.dart';
 
 class BlogContent extends StatelessWidget {
-  const BlogContent({super.key});
+  final BlogsDetailModel blogDetail;
+  const BlogContent({super.key, required this.blogDetail});
 
   @override
   Widget build(BuildContext context) {
+    final theDoc = Document.fromJson(jsonDecode(blogDetail.content));
+    final theContent = QuillController(
+      document: theDoc,
+      selection: const TextSelection.collapsed(offset: 0),
+      readOnly: true,
+    );
     return Padding(
       padding: const .all(16.0),
-      child: CustomTextStyle(
-        text:
-            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-        fontSize: 16,
+      child: QuillEditorConfigration(
+        controller: theContent,
+        scrollable: false,
+        showCursor: false,
+        expands: false,
       ),
     );
   }

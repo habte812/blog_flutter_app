@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:tech_node/core/constants/themes.dart';
 
 class CustomTextField extends HookWidget {
   final TextEditingController? controller;
@@ -23,6 +24,7 @@ class CustomTextField extends HookWidget {
   final String? keyForIcon;
   final ValueChanged<String>? onChanged;
   final bool? autofocus;
+  final FocusNode? focusNode;
 
   const CustomTextField({
     super.key,
@@ -47,6 +49,7 @@ class CustomTextField extends HookWidget {
     this.autofocus,
     this.label,
     this.initialValue,
+    this.focusNode,
   });
 
   @override
@@ -72,6 +75,7 @@ class CustomTextField extends HookWidget {
           ),
       autofocus: autofocus ?? false,
       keyboardType: keyboardType,
+      focusNode: focusNode,
       autofillHints: autofillHints,
       decoration: InputDecoration(
         labelText: label,
@@ -85,47 +89,19 @@ class CustomTextField extends HookWidget {
         enabledBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: Colors.white10),
         ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: context.primary),
+        ),
+        errorBorder: const UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.redAccent),
+        ),
+        focusedErrorBorder: const UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.redAccent),
         ),
         counterText: "",
         contentPadding:
-            contentPadding ?? .symmetric(horizontal: 8, vertical: 5),
+            contentPadding ?? const .symmetric(horizontal: 8, vertical: 5),
       ),
-
-      // decoration: InputDecoration(
-      //   prefixIcon: prefixIcon,
-      //   suffixIcon: obscureText == true
-      //       ? IconButton(
-      //           constraints: const BoxConstraints(),
-      //           padding: const EdgeInsets.all(0),
-      //           icon: Icon(
-      //             isclosed.value
-      //                 ? Icons.visibility_outlined
-      //                 : Icons.visibility_off_outlined,
-      //             color: Theme.of(context).colorScheme.onSurface,
-      //           ),
-      //           onPressed: () {
-      //             isclosed.value = !isclosed.value;
-      //           },
-      //         )
-      //       : keyForIcon == 's'
-      //       ? prefixIcon
-      //       : null,
-      //   hintText: hintText,
-      //   hintStyle:
-      //       hintStyle ??
-      //       TextStyle(
-      //         color: Colors.white70,
-      //         fontSize: fontSize,
-      //         fontWeight: FontWeight.w400,
-      //       ),
-      //   border: InputBorder.none,
-      //   enabledBorder: InputBorder.none,
-      //   focusedBorder: InputBorder.none,
-      //   contentPadding: const EdgeInsets.symmetric(vertical: 10),
-      //   counterText: "",
-      // ),
     );
   }
 }

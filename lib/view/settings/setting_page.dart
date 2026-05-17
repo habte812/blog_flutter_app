@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tech_node/app/scroll_provider.dart';
+import 'package:tech_node/core/theme/provider/theme_color_notifier.dart';
 import 'package:tech_node/core/constants/themes.dart';
 import 'package:tech_node/core/custom/custom_text_style.dart';
+import 'package:tech_node/view/settings/widgets/cache/cache_widget.dart';
+import 'package:tech_node/view/settings/widgets/expanded_tile_builder.dart';
 import 'package:tech_node/view/settings/widgets/settings_tile_builder.dart';
+import 'package:tech_node/view/settings/widgets/theme/theme_widget.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final sattingCon = ScrollProvider.of(context).sattingController;
     return ListView(
+      controller: sattingCon,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       children: [
         const SizedBox(height: 30),
-        SectionHeader(title: "Account & Security"),
+        const SectionHeader(title: "Account & Security"),
         SettingsTileBuilder(
           icon: Icons.person_outline,
           title: "Personal Information",
@@ -29,28 +37,46 @@ class SettingPage extends StatelessWidget {
 
         const SizedBox(height: 25),
 
-        SectionHeader(title: "Content Preferences"),
-        SettingsTileBuilder(
-          icon: Icons.image_outlined,
-          title: "Image Quality",
-          subtitle: "High (Uses more data)",
-          trailing: const Icon(
-            Icons.keyboard_arrow_down,
-            color: Colors.white24,
-          ),
-          onTap: () {},
+        const SectionHeader(title: "Content Preferences"),
+        Consumer(
+          builder: (context, ref, child) {
+            final themeColor = ref.watch(themeColorProvider);
+            return ExpandedTileBuilder(
+              icon: Icons.palette_outlined,
+              title: "Accent Color",
+              subtitle: "Change the primary color of icons and buttons",
+              trailingWidget: CircleAvatar(
+                radius: 10,
+                backgroundColor: themeColor,
+              ),
+              childs: const ThemeWidget(),
+            );
+          },
         ),
         SettingsTileBuilder(
+          icon: Icons.view_comfy_alt_outlined,
+          title: "Layout Style",
+          subtitle: "Change the layout of the app",
+          onTap: () {},
+        ),
+        const SizedBox(height: 25),
+        const SectionHeader(title: "Data & Storage"),
+        SettingsTileBuilder(
+          icon: Icons.wifi_off_outlined,
+          title: "Offline Reading",
+          subtitle: "Manage downloaded articles",
+          onTap: () {},
+        ),
+        const ExpandedTileBuilder(
           icon: Icons.delete_sweep_outlined,
           title: "Clear Cache",
           subtitle: "Currently using 124MB",
-          onTap: () {
-          },
-        ),
 
+          childs: CacheWidget(),
+        ),
         const SizedBox(height: 25),
 
-        SectionHeader(title: "Notifications"),
+        const SectionHeader(title: "Notifications"),
         SettingsTileBuilder(
           icon: Icons.notifications_none,
           title: "Push Notifications",
@@ -58,14 +84,28 @@ class SettingPage extends StatelessWidget {
           trailing: Switch(
             value: true,
             onChanged: (v) {},
-            activeColor: primary,
+            activeThumbColor: context.primary,
             trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
           ),
         ),
 
         const SizedBox(height: 25),
+        const SectionHeader(title: "Support"),
 
-        SectionHeader(title: "General"),
+        SettingsTileBuilder(
+          icon: Icons.bug_report_outlined,
+          title: "Report a Bug",
+          subtitle: "Help us improve the app",
+          onTap: () {},
+        ),
+        SettingsTileBuilder(
+          icon: Icons.share_outlined,
+          title: "Invite Friends",
+          subtitle: "Share this app with other readers",
+          onTap: () {},
+        ),
+        const SizedBox(height: 25),
+        const SectionHeader(title: "General"),
         SettingsTileBuilder(
           icon: Icons.description_outlined,
           title: "Terms of Service",
@@ -73,17 +113,19 @@ class SettingPage extends StatelessWidget {
         ),
         SettingsTileBuilder(
           icon: Icons.info_outline,
-          title: "App Version",
-          subtitle: "v1.0.2-stable",
-          onTap: null, // Just info
+          title: "About App",
+          onTap: () {},
         ),
-
+        const SettingsTileBuilder(
+          icon: Icons.update_outlined,
+          title: "Check for Updates",
+          subtitle: "Current version: 1.0.0",
+          onTap: null,
+        ),
         const SizedBox(height: 40),
-
         Center(
           child: TextButton(
-            onPressed: () {
-            },
+            onPressed: () {},
             child: const CustomTextStyle(
               text: "Logout Account",
               textColor: Colors.redAccent,
@@ -92,7 +134,7 @@ class SettingPage extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 80),
+        const SizedBox(height: 20),
       ],
     );
   }
@@ -108,7 +150,7 @@ class SectionHeader extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 12, left: 4),
       child: CustomTextStyle(
         text: title.toUpperCase(),
-        textColor: primary,
+        textColor: context.primary,
         fontSize: 12,
         fontWeight: FontWeight.bold,
       ),
