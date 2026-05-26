@@ -40,6 +40,7 @@ class CommentsNotifier extends _$CommentsNotifier {
         name: 'posting...',
         isFollowing: false,
         profilePicture: currentUser?.profileImage,
+        userRole: 'reader'
       ),
       postId: int.parse(postId),
       userId: currentUser?.id ?? 0,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:tech_node/core/constants/themes.dart';
@@ -8,6 +7,7 @@ import 'package:tech_node/core/custom/custom_text_style.dart';
 import 'package:tech_node/view/create/widgets/guest/features_grid.dart';
 import 'package:tech_node/view/create/widgets/guest/final_continue_login.dart';
 import 'package:tech_node/view/create/widgets/guest/user_and_author_stats.dart';
+import 'package:tech_node/view/create/widgets/guest/widgets/create_guest_app_bar.dart';
 
 class CreateBlogGuestPage extends StatefulWidget {
   const CreateBlogGuestPage({super.key});
@@ -93,7 +93,7 @@ class CreateBlogGuestPageState extends State<CreateBlogGuestPage>
             parent: BouncingScrollPhysics(),
           ),
           slivers: [
-            _buildAppBar(),
+            const CreateGuestAppBar(),
             SliverToBoxAdapter(
               child: FadeTransition(
                 opacity: _fadeAnim,
@@ -110,71 +110,6 @@ class CreateBlogGuestPageState extends State<CreateBlogGuestPage>
                     ],
                   ),
                 ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAppBar() {
-    return SliverAppBar(
-      floating: true,
-      pinned: false,
-      snap: true,
-      backgroundColor: background,
-      expandedHeight: 47,
-      collapsedHeight: 45,
-      toolbarHeight: 45,
-      leading: null,
-      surfaceTintColor: background,
-      automaticallyImplyLeading: false,
-      flexibleSpace: FlexibleSpaceBar(
-        titlePadding: EdgeInsets.zero,
-        expandedTitleScale: 1.0,
-        title: Row(
-          children: [
-            IconButton(
-              highlightColor: background,
-              splashColor: background,
-              onPressed: () {
-                if (!context.mounted) return;
-                if (context.canPop()) {
-                  context.pop();
-                } else {
-                  context.go('/home');
-                }
-              },
-              icon: const Icon(LucideIcons.arrowLeft, color: Colors.white),
-            ),
-            const CustomTextStyle(
-              text: 'Create Post',
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              letterSpacing: -0.3,
-            ),
-            const Spacer(),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(
-                color: card,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: Colors.amber.withValues(alpha: 0.4),
-                  width: 1,
-                ),
-              ),
-              child: const Row(
-                children: [
-                  Icon(Icons.lock_outline_rounded, size: 11),
-                  SizedBox(width: 5),
-                  CustomTextStyle(
-                    text: 'Sign in required',
-                    fontSize: 11,
-                    letterSpacing: 0.2,
-                  ),
-                ],
               ),
             ),
           ],
@@ -248,7 +183,7 @@ class CreateBlogGuestPageState extends State<CreateBlogGuestPage>
             ),
             child: RichText(
               text: TextSpan(
-                style: const TextStyle(fontSize: 13, color: Colors.white),
+                style: const TextStyle(fontSize: 13, color: Colors.white54),
                 children: [
                   const TextSpan(text: "Don't have an account? "),
                   TextSpan(
@@ -286,12 +221,12 @@ class CreateBlogGuestPageState extends State<CreateBlogGuestPage>
               final blink = (_shimmerCtrl.value * 2).floor() % 2 == 0;
               return AnimatedOpacity(
                 opacity: blink ? 1.0 : 0.0,
-                duration: const Duration(milliseconds: 100),
+                duration: const Duration(milliseconds: 1),
                 child: Container(
                   width: 2,
                   height: 18,
                   decoration: BoxDecoration(
-                    color: card,
+                    color: Colors.white38,
                     borderRadius: BorderRadius.circular(1),
                   ),
                 ),

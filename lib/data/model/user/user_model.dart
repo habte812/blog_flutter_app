@@ -41,6 +41,7 @@ class AuthorProfileModel {
   final String userName;
   final String? userBio;
   final String? profileImage;
+  final String userRole;
   final int totalPosts;
   final String joinedAt;
   final bool isOwner;
@@ -59,6 +60,7 @@ class AuthorProfileModel {
     required this.followers,
     required this.followings,
     required this.isFollowing,
+    required this.userRole,
   });
 
   factory AuthorProfileModel.fromJson(Map<String, dynamic> json) {
@@ -73,6 +75,7 @@ class AuthorProfileModel {
       followers: json['followers_count'],
       followings: json['followings_count'],
       isFollowing: json['is_following'],
+      userRole: json['role'],
     );
   }
 }

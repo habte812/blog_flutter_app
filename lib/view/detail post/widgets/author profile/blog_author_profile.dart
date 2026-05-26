@@ -60,7 +60,6 @@ class BlogAuthorProfile extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Flexible(
-                            // fit: .tight,
                             child: CustomTextStyle(
                               text: blogDetail.previewDatas.author.name,
                               fontSize: 16,
@@ -69,6 +68,17 @@ class BlogAuthorProfile extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+                          if (blogDetail.previewDatas.author.userRole ==
+                                  'admin' ||
+                              blogDetail.previewDatas.author.userRole ==
+                                  'author') ...[
+                            const SizedBox(width: 4),
+                            const Icon(
+                              Icons.verified_sharp,
+                              color: Color(0xff137fec),
+                              size: 14,
+                            ),
+                          ],
                           Consumer(
                             builder: (context, ref, child) {
                               final theAuthor = ref.watch(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tech_node/core/constants/themes.dart';
 import 'package:tech_node/core/custom/custom_button.dart';
 import 'package:tech_node/core/custom/custom_text_style.dart';
@@ -18,12 +19,11 @@ class FinalContinueLogin extends StatelessWidget {
       ),
       child: Column(
         children: [
-          // Pen icon
           Container(
             width: 56,
             height: 56,
             decoration: BoxDecoration(
-              color: context.primary,
+              color: context.primary.withValues(alpha: 0.2),
               shape: BoxShape.circle,
               border: Border.all(color: context.primary.withValues(alpha: 0.3)),
               boxShadow: [
@@ -38,23 +38,21 @@ class FinalContinueLogin extends StatelessWidget {
           ),
           const SizedBox(height: 18),
           const CustomTextStyle(
-          text:   'Ready to share your voice?',
+            text: 'Ready to share your voice?',
             textAlign: TextAlign.center,
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              
-              letterSpacing: -0.3,
-            ),
-          
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.3,
+          ),
           const SizedBox(height: 10),
           const CustomTextStyle(
-           text:  'Join thousands of writers who publish their\nbest work here every day.',
+            text:
+                'Join thousands of writers who publish their\nbest work here every day.',
             textAlign: TextAlign.center,
-           
-              fontFamily: 'Georgia',
-              fontSize: 13,
-              textColor: Colors.white54,
-             
+
+            fontFamily: 'Georgia',
+            fontSize: 13,
+            textColor: Colors.white54,
           ),
           const SizedBox(height: 24),
           Row(
@@ -63,7 +61,9 @@ class FinalContinueLogin extends StatelessWidget {
                 child: CustomButton(
                   backgroundColor: Colors.transparent,
                   height: 50,
-                  onPressed: () {},
+                  onPressed: () {
+                    context.push('/login_page/register_page');
+                  },
                   label: const CustomTextStyle(
                     text: 'Create Account',
                     fontSize: 14,
@@ -75,7 +75,9 @@ class FinalContinueLogin extends StatelessWidget {
               Expanded(
                 child: CustomButton(
                   height: 50,
-                  onPressed: () {},
+                  onPressed: () {
+                    context.push('/login_page');
+                  },
                   label: const CustomTextStyle(
                     text: 'Sign in',
                     fontSize: 14,

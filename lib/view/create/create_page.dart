@@ -29,7 +29,8 @@ class CreatePage extends HookConsumerWidget {
 
     if (authState == AuthStatus.unauthenticated) {
       return const CreateBlogGuestPage();
-    } else if (authState == AuthStatus.authenticated) {
+    } else if (authState == AuthStatus.authenticated ||
+        authState == AuthStatus.unverified) {
       if (userRole == 'reader') {
         return const IfUserIsReader();
       }

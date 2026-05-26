@@ -175,10 +175,24 @@ class ProfileBioAndTotal extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                CustomTextStyle(
-                  text: user.userName,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                Row(
+                  mainAxisAlignment: .center,
+                  crossAxisAlignment: .center,
+                  mainAxisSize: .min,
+                  children: [
+                    CustomTextStyle(
+                      text: user.userName,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    const SizedBox(width: 3),
+                    if (user.userRole == 'admin' || user.userRole == 'author')
+                      const Icon(
+                        Icons.verified_sharp,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                  ],
                 ),
                 if (user.userBio != null)
                   CustomTextStyle(

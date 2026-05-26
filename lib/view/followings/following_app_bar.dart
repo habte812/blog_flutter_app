@@ -81,8 +81,8 @@ class _AuthorAvatarItem extends StatelessWidget {
           context.push('/author-profile/${author.id}/');
         },
         child: Container(
-          width: 75,
-          margin: const EdgeInsets.only(right: 12),
+          width: 85,
+          margin: const .only(right: 12),
           child: index == 9
               ? Center(
                   child: TextButton(
@@ -113,11 +113,30 @@ class _AuthorAvatarItem extends StatelessWidget {
                         ),
                       ),
                     const SizedBox(height: 8),
-                    CustomTextStyle(
-                      text: author.name,
-                      fontSize: 11,
-                      maxLine: 1,
-                      textColor: Colors.white70,
+                    Row(
+                      crossAxisAlignment: .center,
+                      mainAxisAlignment: .center,
+                      children: [
+                        Flexible(
+                          child: CustomTextStyle(
+                            text: author.name,
+                            fontSize: 11,
+                            maxLine: 1,
+                            overflow: .ellipsis,
+                            textColor: Colors.white70,
+                            textAlign: .center,
+                          ),
+                        ),
+                        if (author.userRole == 'admin' ||
+                            author.userRole == 'author') ...[
+                          const SizedBox(width: 4),
+                          const Icon(
+                            Icons.verified_sharp,
+                            color: Color(0xff137fec),
+                            size: 14,
+                          ),
+                        ],
+                      ],
                     ),
                   ],
                 ),

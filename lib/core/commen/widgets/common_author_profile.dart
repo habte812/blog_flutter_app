@@ -57,8 +57,8 @@ class CommonAuthorProfile extends ConsumerWidget {
           child: Material(
             color: Colors.transparent,
             child: InkWell(
-        splashColor: card,
-        highlightColor: card,
+              splashColor: card,
+              highlightColor: card,
               onTap: () {
                 context.push('/author-profile/${blogModel.author.id}/');
               },
@@ -100,12 +100,28 @@ class CommonAuthorProfile extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: .start,
                       children: [
-                        CustomTextStyle(
-                          text: blogModel.author.name,
-                          overflow: .ellipsis,
-                          textColor: Colors.white54,
-                          maxLine: 1,
-                          fontSize: 14,
+                        Row(
+                          mainAxisSize: .min,
+                          children: [
+                            Flexible(
+                              child: CustomTextStyle(
+                                text: blogModel.author.name,
+                                overflow: .ellipsis,
+                                textColor: Colors.white54,
+                                maxLine: 1,
+                                fontSize: 14,
+                              ),
+                            ),
+                            if (blogModel.author.userRole == 'admin' ||
+                                blogModel.author.userRole == 'author') ...[
+                              const SizedBox(width: 4),
+                              const Icon(
+                                Icons.verified_sharp,
+                                color: Color(0xff137fec),
+                                size: 14,
+                              ),
+                            ],
+                          ],
                         ),
                         CustomTextStyle(
                           text: blogModel.publishedAt,

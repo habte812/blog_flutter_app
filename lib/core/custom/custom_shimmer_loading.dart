@@ -585,22 +585,12 @@ class FollowingsListShimmer extends StatelessWidget {
         itemBuilder: (context, index) {
           return Shimmer.fromColors(
             baseColor: card,
-            highlightColor: card.withValues(alpha: 0.3),
+            highlightColor: card.withValues(alpha: 0.1),
             child: Padding(
               padding: const .symmetric(horizontal: 8),
               child: Column(
                 children: [
-                  Container(
-                    padding: const .all(3),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.black, width: 2),
-                    ),
-                    child: const CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.black,
-                    ),
-                  ),
+                  const CircleAvatar(radius: 30, backgroundColor: Colors.black),
                   const SizedBox(height: 8),
                   Container(
                     height: 15,
