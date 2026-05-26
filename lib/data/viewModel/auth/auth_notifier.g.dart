@@ -41,7 +41,7 @@ final class AuthNotifierProvider
   }
 }
 
-String _$authNotifierHash() => r'd69a19435ce715127f9fbf9bf74b8decd85248ef';
+String _$authNotifierHash() => r'b08e5b3a4bde10fb3c933744ff5deccd95fb8b7d';
 
 abstract class _$AuthNotifier extends $Notifier<AuthState> {
   AuthState build();
@@ -61,3 +61,43 @@ abstract class _$AuthNotifier extends $Notifier<AuthState> {
     element.handleValue(ref, created);
   }
 }
+
+@ProviderFor(userRole)
+const userRoleProvider = UserRoleProvider._();
+
+final class UserRoleProvider extends $FunctionalProvider<String, String, String>
+    with $Provider<String> {
+  const UserRoleProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'userRoleProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$userRoleHash();
+
+  @$internal
+  @override
+  $ProviderElement<String> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  String create(Ref ref) {
+    return userRole(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String>(value),
+    );
+  }
+}
+
+String _$userRoleHash() => r'db788e2f9f118e2ae4c4b9364e52c89562b819ec';

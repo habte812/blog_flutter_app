@@ -5,7 +5,6 @@ import 'package:tech_node/core/error/blog_exception.dart';
 import 'package:tech_node/core/error/dio_exception_handler.dart';
 import 'package:tech_node/data/model/blog/blogs_detail_model.dart';
 import 'package:tech_node/data/model/pagination/paginated_response_model.dart';
-import 'package:tech_node/data/model/pagination/posted%20blogs/posted_blogs_state.dart';
 import 'package:tech_node/data/model/blog/blogs_preview_model.dart';
 import 'package:tech_node/data/model/ui/create_blog_data_model.dart';
 import 'package:tech_node/data/model/user/user_model.dart';
@@ -26,6 +25,9 @@ abstract class BlogPostRepository {
     required int blogId,
   });
   Future<String> deleteMyBlog({required int blogId});
+  Future<PaginatedResponseModel<BlogsPreviewModel>> getMyPostedBlogs({
+    String? cursor,
+  });
 }
 
 @riverpod
@@ -188,6 +190,36 @@ class BlogPostRepositoryImp implements BlogPostRepository {
         return response.data['message'];
       }
       throw BlogException("Failed to delete blog");
+    } on DioException catch (e) {
+      throw dioExceptionHandler(e);
+    }
+  }
+  @override
+  Future<PaginatedResponseModel<BlogsPreviewModel>> getMyPostedBlogs({
+    String? cursor,
+  })async{
+      try {
+      final response = await _dio.get(
+        'posts/my-blogs',
+        queryParameters: {'cursor': ?cursor},
+      );
+      if (response.data['status'] == 'Success' && response.statusCode == 200) {
+        final List data = response.data['blogs'];
+        final String? nextCursor = response.data['next_cursor'];
+        final bool hasMore = response.data['has_more_pages'];
+        final List layout = response.data['layout'];
+        final items = data
+            .map((json) => BlogsPreviewModel.fromJson(json))
+            .toList();
+        return PaginatedResponseModel(
+          data: items,
+          hasMorePages: hasMore,
+          nextCursor: nextCursor,
+          layout: layout
+        );
+      }
+
+      throw BlogException("Failed to load blogs");
     } on DioException catch (e) {
       throw dioExceptionHandler(e);
     }

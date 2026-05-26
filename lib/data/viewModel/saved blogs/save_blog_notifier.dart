@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:tech_node/data/model/pagination/paginated_response_model.dart';
 import 'package:tech_node/data/model/pagination/saved%20blogs/saved_blogs_state.dart';
 import 'package:tech_node/data/repository/save%20blog/save_blog_repository.dart';
 

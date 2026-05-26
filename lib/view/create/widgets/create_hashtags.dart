@@ -36,7 +36,7 @@ class CreateHashtags extends ConsumerWidget {
           const SizedBox(height: 10),
           TextField(
             controller: hashController,
-            readOnly: hashtags!.length == 6,
+            readOnly: hashtags.length == 6,
             decoration: InputDecoration(
               hintText: hashtags.length >= 6
                   ? 'Maximum 6 tags reached'

@@ -17,7 +17,6 @@ class ProfileBioAndTotal extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authProvider).status;
-    final userData = ref.watch(userProvider);
     if (authState == AuthStatus.unauthenticated) {
       return const SafeArea(
         child: Center(
@@ -28,115 +27,155 @@ class ProfileBioAndTotal extends ConsumerWidget {
           ),
         ),
       );
-    }
-    return SafeArea(
-      child: userData.when(
-        loading: () => const CustomUserProfileShimmer(),
-        error: (error, stackTrace) => CustomErrorNotifier(
-          action: () => ref.read(userProvider.notifier).refreshProfile(),
-          errorMessage: error.toString(),
-          textColor: Colors.white,
+    } else if (authState == AuthStatus.error) {
+      return const SafeArea(
+        child: Center(
+          child: CustomTextStyle(
+            text: 'Error loading profile',
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        data: (user) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: .center,
-              children: [
-                const SizedBox(height: 20),
-                ClipRRect(
-                  borderRadius: .circular(45),
-                  child: CircleAvatar(
-                    radius: 45,
-                    backgroundColor: card,
-                    child: user.profileImage == null
-                        ? const Icon(
-                            LucideIcons.user,
-                            color: Colors.white54,
-                            size: 45,
-                          )
-                        : CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: user.profileImage!,
-                            placeholder: (context, url) => const Center(
-                              child: Icon(
+      );
+    }
+    return Consumer(
+      builder: (context, ref, child) {
+        final userData = ref.watch(userProvider);
+        return SafeArea(
+          child: userData.when(
+            loading: () => const CustomUserProfileShimmer(),
+            error: (error, stackTrace) => CustomErrorNotifier(
+              action: () => ref.read(userProvider.notifier).refreshProfile(),
+              errorMessage: error.toString(),
+              textColor: Colors.white,
+            ),
+            data: (user) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: .center,
+                  children: [
+                    const SizedBox(height: 20),
+                    ClipRRect(
+                      borderRadius: .circular(45),
+                      child: CircleAvatar(
+                        radius: 45,
+                        backgroundColor: card,
+                        child: user.profileImage == null
+                            ? const Icon(
                                 LucideIcons.user,
                                 color: Colors.white54,
                                 size: 45,
+                              )
+                            : CachedNetworkImage(
+                                fit: BoxFit.cover,
+                                imageUrl: user.profileImage!,
+                                placeholder: (context, url) => const Center(
+                                  child: Icon(
+                                    LucideIcons.user,
+                                    color: Colors.white54,
+                                    size: 45,
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    const Center(
+                                      child: Icon(
+                                        LucideIcons.user,
+                                        color: Colors.redAccent,
+                                        size: 45,
+                                      ),
+                                    ),
                               ),
-                            ),
-                            errorWidget: (context, url, error) => const Center(
-                              child: Icon(
-                                LucideIcons.user,
-                                color: Colors.redAccent,
-                                size: 45,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    CustomTextStyle(
+                      text: user.userName,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    if (user.userBio != null)
+                      CustomTextStyle(
+                        text: user.userBio!,
+                        textColor: Colors.white70,
+                        textAlign: TextAlign.center,
+                        maxLine: 2,
+                        fontSize: 14,
+                      ),
+                    if (user.userBio == null)
+                      Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          splashColor: context.primary,
+                          onTap: () {
+                            context.push('/profile_page/edit_profile_page');
+                          },
+                          child: const Row(
+                            mainAxisAlignment: .center,
+                            mainAxisSize: .min,
+                            children: [
+                              Icon(Icons.add, color: Colors.white54, size: 18),
+                              CustomTextStyle(
+                                text: "Add bio",
+                                fontSize: 14,
+                                textColor: Colors.white54,
                               ),
-                            ),
+                            ],
                           ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                CustomTextStyle(
-                  text: user.userName,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-                if (user.userBio != null)
-                  CustomTextStyle(
-                    text: user.userBio!,
-                    textColor: Colors.white70,
-                    textAlign: TextAlign.center,
-                    maxLine: 2,
-                    fontSize: 14,
-                  ),
-                if (user.userBio == null)
-                  Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      splashColor: context.primary,
-                      onTap: () {
-                        context.push('/profile_page/edit_profile_page');
-                      },
-                      child: const Row(
-                        mainAxisAlignment: .center,
-                        mainAxisSize: .min,
+                        ),
+                      ),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Row(
+                        mainAxisAlignment: .spaceAround,
                         children: [
-                          Icon(Icons.add, color: Colors.white54, size: 18),
-                          CustomTextStyle(
-                            text: "Add bio",
-                            fontSize: 14,
-                            textColor: Colors.white54,
+                          _buildStatColumn(
+                            "Articles",
+                            user.totalPosts.toString(),
+                          ),
+                          _buildStatColumn(
+                            "Followers",
+                            user.followers.toString(),
+                          ),
+                          _buildStatColumn(
+                            "Following",
+                            user.followings.toString(),
                           ),
                         ],
                       ),
                     ),
-                  ),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(
-                    mainAxisAlignment: .spaceAround,
-                    children: [
-                      _buildStatColumn("Articles", user.totalPosts.toString()),
-                      _buildStatColumn("Followers", user.followers.toString()),
-                      _buildStatColumn("Following", user.followings.toString()),
-                    ],
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          );
-        },
-      ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
 
 Widget _buildStatColumn(String label, String count) {
   return Expanded(
-    child: Column(
-      children: [
-        CustomTextStyle(text: count, fontSize: 18, fontWeight: FontWeight.bold),
-        CustomTextStyle(text: label, fontSize: 12, textColor: Colors.white54),
-      ],
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        highlightColor: card,
+        onTap: () {},
+        child: Column(
+          children: [
+            CustomTextStyle(
+              text: count,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+            CustomTextStyle(
+              text: label,
+              fontSize: 12,
+              textColor: Colors.white54,
+            ),
+          ],
+        ),
+      ),
     ),
   );
 }

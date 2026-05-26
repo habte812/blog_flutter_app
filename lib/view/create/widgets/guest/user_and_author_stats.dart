@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tech_node/core/constants/themes.dart';
-import 'package:tech_node/view/create/widgets/guest/gggggggggggg.dart';
-import 'package:tech_node/view/create/widgets/guest/ututututu.dart';
+import 'package:tech_node/view/create/widgets/guest/widgets.dart';
+import 'package:tech_node/view/create/widgets/guest/section_label.dart';
 
-class WriterStatsTeaser extends StatelessWidget {
-  const WriterStatsTeaser({super.key});
+class UserAndAuthorStats extends StatelessWidget {
+  const UserAndAuthorStats({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +22,15 @@ class WriterStatsTeaser extends StatelessWidget {
           ),
           child: const Row(
             children: [
-              StatPill(value: '48K+', label: 'Writers', color: C.teal),
+              StatPill(value: '48K+', label: 'Writers', color: Colors.teal),
               VertDivider(),
-              StatPill(value: '1.2M', label: 'Stories', color: C.indigo),
+              StatPill(value: '1.2M', label: 'Stories', color: Colors.indigo),
               VertDivider(),
-              StatPill(value: '8.4M', label: 'Readers', color: C.rose),
+              StatPill(
+                value: '8.4M',
+                label: 'Readers',
+                color: Colors.redAccent,
+              ),
             ],
           ),
         ),

@@ -14,7 +14,7 @@ import 'package:tech_node/view/create/widgets/create_and_draft_button.dart';
 import 'package:tech_node/view/create/widgets/create_hashtags.dart';
 import 'package:tech_node/view/create/widgets/blog%20content/content_container.dart';
 import 'package:tech_node/view/create/widgets/guest/create_guest_page.dart';
-import 'package:tech_node/view/create/widgets/guest/ututututu.dart';
+import 'package:tech_node/view/create/widgets/reader%20user/if_user_is_reader.dart';
 import 'package:tech_node/view/create/widgets/title_container.dart';
 import 'package:tech_node/view/create/widgets/thumbnail/upload_thumbnail.dart';
 import 'package:tech_node/data/viewModel/ui/ui%20blog%20data/ui_data_provider.dart';
@@ -25,8 +25,17 @@ class CreatePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authProvider).status;
+    final userRole = ref.watch(userRoleProvider);
 
     if (authState == AuthStatus.unauthenticated) {
+      return const CreateBlogGuestPage();
+    } else if (authState == AuthStatus.authenticated) {
+      if (userRole == 'reader') {
+        return const IfUserIsReader();
+      }
+    } else if (authState == AuthStatus.error) {
+      return const CreateBlogGuestPage();
+    } else if (authState == AuthStatus.loading) {
       return const CreateBlogGuestPage();
     }
 

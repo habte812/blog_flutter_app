@@ -33,4 +33,18 @@ class AuthState {
   });
 
   factory AuthState.initial() => AuthState(status: AuthStatus.initial);
+
+  AuthState copyWith({
+  AuthStatus? status,
+  AuthModel? authModel,
+  String? errorMessage,
+  AuthAction? lastAction,
+}) {
+  return AuthState(
+    status: status ?? this.status,
+    authModel: authModel ?? this.authModel,
+    errorMessage: errorMessage ?? this.errorMessage,
+    lastAction: lastAction ?? this.lastAction,
+  );
+}
 }

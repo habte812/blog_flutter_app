@@ -40,20 +40,26 @@ class SavedTredingCard extends StatelessWidget {
             children: [
               Expanded(
                 flex: 3,
-                child: ClipRRect(
-                  borderRadius: .circular(6),
-                  child: CachedNetworkImage(
-                    height: 138,
-                    width: 138,
-                    fit: BoxFit.cover,
-                    imageUrl:
-                        'https://www.mamp.one/wp-content/uploads/2024/09/image-resources2.jpg',
-                    placeholder: (context, url) =>
-                        const Center(child: CustomLoading()),
-                    errorWidget: (context, url, error) => const Center(
-                      child: Icon(
-                        LucideIcons.imageOff,
-                        color: Colors.redAccent,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: card,
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: .circular(6),
+                    child: CachedNetworkImage(
+                      height: 138,
+                      width: 138,
+                      fit: BoxFit.cover,
+                      imageUrl:
+                          'https://www.mamp.one/wp-content/uploads/2024/09/image-resources2.jpg',
+                      placeholder: (context, url) =>
+                          const Center(child: CustomLoading()),
+                      errorWidget: (context, url, error) => const Center(
+                        child: Icon(
+                          LucideIcons.imageOff,
+                          color: Colors.redAccent,
+                        ),
                       ),
                     ),
                   ),
@@ -85,6 +91,12 @@ class SavedTredingCard extends StatelessWidget {
                       maxLine: 2,
                       overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.bold,
+                    ),
+                    const SizedBox(height: 10),
+                    const CustomTextStyle(
+                      text: 'Apr 10 2026',
+                      textColor: Colors.white54,
+                      fontSize: 13,
                     ),
                     const Spacer(),
                     // CommonAuthorProfile(radius: 10, blogModel: blogModel),

@@ -1,15 +1,15 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:tech_node/data/model/pagination/my%20posted%20blogs/my_posted_blogs_state.dart';
 import 'package:tech_node/data/model/pagination/paginated_response_model.dart';
-import 'package:tech_node/data/model/pagination/posted%20blogs/posted_blogs_state.dart';
 import 'package:tech_node/data/repository/blog/blog_post_repository.dart';
-part 'blog_feed_notifier.g.dart';
+part 'my_posted_blogs_notifier.g.dart';
 
 @riverpod
-class BlogFeedNotifier extends _$BlogFeedNotifier {
+class MyPostedBlogsNotifier extends _$MyPostedBlogsNotifier {
   @override
-  PostedBlogsState build() {
+  MyPostedBlogsState build() {
     Future.microtask(() => fetchFirstPage());
-    return PostedBlogsState();
+    return const MyPostedBlogsState();
   }
 
   Future<void> fetchFirstPage({bool refresh = false}) async {
@@ -18,17 +18,18 @@ class BlogFeedNotifier extends _$BlogFeedNotifier {
       status: PaginationStatus.loading,
       clearCursor: true,
       clearError: true,
-      items: refresh ? [] : state.items,
+      myblogs: refresh ? [] : state.myblogs,
     );
     try {
-      final repo = await ref.read(blogPostRepositoryProvider).fetchBlogIndex();
+      final repo = await ref
+          .read(blogPostRepositoryProvider)
+          .getMyPostedBlogs();
       if (!ref.mounted) return;
       state = state.copyWith(
         status: PaginationStatus.success,
         nextCursor: repo.nextCursor,
         hasMorePages: repo.hasMorePages,
-        items: repo.data,
-        layout: repo.layout
+        myblogs: repo.data,
       );
     } catch (e) {
       if (!ref.mounted) return;
@@ -46,25 +47,26 @@ class BlogFeedNotifier extends _$BlogFeedNotifier {
       return;
     }
     state = state.copyWith(status: PaginationStatus.loadingMore);
-    try{
-      final repo = await ref.read(blogPostRepositoryProvider).fetchBlogIndex(cursor: state.nextCursor);
+    try {
+      final repo = await ref
+          .read(blogPostRepositoryProvider)
+          .getMyPostedBlogs(cursor: state.nextCursor);
       if (!ref.mounted) return;
-       state = state.copyWith(
+      state = state.copyWith(
         status: PaginationStatus.success,
         nextCursor: repo.nextCursor,
         hasMorePages: repo.hasMorePages,
-        items: [...state.items,...repo.data],
-        layout: [...state.layout,...repo.layout]
+        myblogs: [...state.myblogs, ...repo.data],
       );
-    }catch(e){
+    } catch (e) {
       state = state.copyWith(
         status: PaginationStatus.failure,
         errorMessage: e.toString(),
-      );}
+      );
+    }
   }
 
- Future<void> refreshThepage() async {
+  Future<void> refreshThepage() async {
     await fetchFirstPage(refresh: true);
   }
 }
-

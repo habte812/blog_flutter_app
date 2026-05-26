@@ -1,7 +1,6 @@
 class AuthModel {
   final String accessToken;
   final String tokenType;
-  final String role;
   final String? refreshToken;
   final AuthUser authUser;
 
@@ -10,7 +9,6 @@ class AuthModel {
     this.refreshToken,
     required this.tokenType,
     required this.authUser,
-    required this.role,
   });
 
   factory AuthModel.fromJson(Map<String, dynamic> json) => AuthModel(
@@ -18,22 +16,23 @@ class AuthModel {
     refreshToken: json["refresh_token"],
     tokenType: json["token_type"],
     authUser: AuthUser.fromJson(json['user']),
-    role: json["role"],
   );
 
   Map<String, dynamic> toJson() => {
     "token": accessToken,
     "refresh_token": refreshToken,
     "token_type": tokenType,
-    "user": {
-      'is_verified': authUser.isVerified
-    },
+    "user": authUser.toJson(),
   };
 }
 
 class AuthUser {
   final bool isVerified;
-  AuthUser({required this.isVerified});
-  factory AuthUser.fromJson(Map<String, dynamic> json) =>
-      AuthUser(isVerified: json['is_verified']);
+  final String role;
+  AuthUser({required this.isVerified, required this.role});
+  factory AuthUser.fromJson(Map<String, dynamic> json) => AuthUser(
+    isVerified: json['is_verified'] ?? false,
+    role: json['role'] ?? 'guest',
+  );
+  Map<String, dynamic> toJson() => {"is_verified": isVerified, "role": role};
 }

@@ -235,7 +235,7 @@ final class MyFollowingBlogsNotifierProvider
 }
 
 String _$myFollowingBlogsNotifierHash() =>
-    r'ca77b21fbbaf4a796bd8db9b994483f70263bdd1';
+    r'3df78a48291a4b0667a0752cdd2724a2c99552e1';
 
 abstract class _$MyFollowingBlogsNotifier
     extends $Notifier<FollowingBlogsState<dynamic>> {

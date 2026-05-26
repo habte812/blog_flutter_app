@@ -19,6 +19,10 @@ class SavedBlogsList extends ConsumerWidget {
 
     if (authState == AuthStatus.unauthenticated) {
       return const FavoritesGuestPage();
+    } else if (authState == AuthStatus.error) {
+      return const FavoritesGuestPage();
+    } else if (authState == AuthStatus.loading) {
+      return const FavoritesGuestPage();
     }
     return Consumer(
       builder: (context, ref, child) {
@@ -41,6 +45,18 @@ class SavedBlogsList extends ConsumerWidget {
                 ref.read(mySavedBlogsProvider.notifier).firstFetchSaved(),
           );
         }
+
+        if (!state.isLoading && state.savedblogs.isEmpty) {
+          Padding(
+            padding: .only(top: MediaQuery.of(context).size.height * 0.12),
+            child: const CustomEmptyState(
+              description:
+                  "Save your favorite articles, tutorials, and tech insights to revisit them anytime.",
+              title: "No favorites yet",
+              icon: Icons.bookmark_border_rounded,
+            ),
+          );
+        }
         return Column(
           children: [
             ListView.builder(
@@ -52,16 +68,6 @@ class SavedBlogsList extends ConsumerWidget {
                 return FeedsListCard(blogModel: state.savedblogs[index]);
               },
             ),
-            if (!state.isLoading && state.savedblogs.isEmpty)
-              Padding(
-                padding: .only(top: MediaQuery.of(context).size.height * 0.12),
-                child: const CustomEmptyState(
-                  description:
-                      "Save your favorite articles, tutorials, and tech insights to revisit them anytime.",
-                  title: "No favorites yet",
-                  icon: Icons.bookmark_border_rounded,
-                ),
-              ),
             if (state.errorMessage != null &&
                 state.savedblogs.isNotEmpty &&
                 !state.isLoadingMore)

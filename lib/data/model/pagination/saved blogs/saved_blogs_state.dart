@@ -1,6 +1,7 @@
 import 'package:tech_node/data/model/blog/blogs_preview_model.dart';
+import 'package:tech_node/data/model/pagination/paginated_response_model.dart';
 
-enum PaginationStatus { idle, loading, loadingMore, success, failure }
+
 
 class SavedBlogsState {
   final List<BlogsPreviewModel> savedblogs;

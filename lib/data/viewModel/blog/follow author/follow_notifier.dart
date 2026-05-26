@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tech_node/data/model/author/author_model.dart';
 import 'package:tech_node/data/model/pagination/following%20blogs/following_blogs_state.dart';
-import 'package:tech_node/data/model/pagination/saved%20blogs/saved_blogs_state.dart';
+import 'package:tech_node/data/model/pagination/paginated_response_model.dart';
 import 'package:tech_node/data/repository/following/following_repository.dart';
 
 part 'follow_notifier.g.dart';

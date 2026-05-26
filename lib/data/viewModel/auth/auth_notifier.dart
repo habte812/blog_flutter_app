@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tech_node/data/model/auth/auth_model.dart';
 import 'package:tech_node/data/model/auth/auth_state.dart';
@@ -11,11 +12,9 @@ class AuthNotifier extends _$AuthNotifier {
   late FlutterSecureStorage _storage;
   @override
   AuthState build() {
-    _storage = const FlutterSecureStorage(
-      aOptions: AndroidOptions(encryptedSharedPreferences: true),
-    );
+    _storage = const FlutterSecureStorage(aOptions: AndroidOptions());
     Future.microtask(() => _checkPersistence());
-    return AuthState(status: AuthStatus.loading);
+    return AuthState(status: .loading);
   }
 
   Future<void> refreshUserstatus() async {
@@ -25,7 +24,9 @@ class AuthNotifier extends _$AuthNotifier {
 
   Future<void> _checkPersistence() async {
     final sessionJson = await _storage.read(key: 'user_session');
-    
+    if (sessionJson != null) {
+      debugPrint('sessionJson------: ${jsonDecode(sessionJson)}');
+    }
     try {
       if (sessionJson == null) {
         state = AuthState(status: AuthStatus.unauthenticated);
@@ -37,6 +38,7 @@ class AuthNotifier extends _$AuthNotifier {
       } else {
         state = AuthState(status: AuthStatus.authenticated, authModel: auth);
       }
+
     } catch (e) {
       state = AuthState(status: AuthStatus.unauthenticated);
     }
@@ -165,4 +167,11 @@ class AuthNotifier extends _$AuthNotifier {
       );
     }
   }
+}
+
+@riverpod
+String userRole(Ref ref) {
+  final authstate = ref.watch(authProvider);
+  return authstate.authModel?.authUser.role ?? 'guest';
+
 }

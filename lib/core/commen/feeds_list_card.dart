@@ -35,22 +35,28 @@ class FeedsListCard extends ConsumerWidget {
               if (blogModel.thumbnail != null)
                 Expanded(
                   flex: 3,
-                  child: ClipRRect(
-                    borderRadius: .circular(6),
-                    child: CachedNetworkImage(
-                      height: 138,
-                      width: 138,
-                      fit: BoxFit.cover,
-                      imageUrl: blogModel.thumbnail!,
-                      placeholder: (context, url) =>
-                          const Center(child: CustomLoading()),
-                      // const Center(
-                      //   child: Icon(LucideIcons.image, color: Colors.white54),
-                      // ),
-                      errorWidget: (context, url, error) => const Center(
-                        child: Icon(
-                          LucideIcons.imageOff,
-                          color: Colors.redAccent,
+                  child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: card,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                    child: ClipRRect(
+                      borderRadius: .circular(6),
+                      child: CachedNetworkImage(
+                        height: 138,
+                        width: 138,
+                        fit: BoxFit.cover,
+                        imageUrl: blogModel.thumbnail!,
+                        placeholder: (context, url) =>
+                            const Center(child: CustomLoading()),
+                        // const Center(
+                        //   child: Icon(LucideIcons.image, color: Colors.white54),
+                        // ),
+                        errorWidget: (context, url, error) => const Center(
+                          child: Icon(
+                            LucideIcons.imageOff,
+                            color: Colors.redAccent,
+                          ),
                         ),
                       ),
                     ),

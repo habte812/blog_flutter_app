@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tech_node/view/Library/widgets/saved_blogs_list.dart';
 
 class DraftBlogs extends StatelessWidget {
   const DraftBlogs({super.key});
@@ -10,8 +9,12 @@ class DraftBlogs extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: 20,
+
       itemBuilder: (context, index) {
-        return Container(color: Colors.amber,height: 40,);
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(color: Colors.amber, height: 40),
+        );
       },
     );
   }

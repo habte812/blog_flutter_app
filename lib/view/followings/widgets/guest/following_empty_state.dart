@@ -75,7 +75,6 @@ class EmptyStateSection extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 12),
           TextButton(
             onPressed: () {
               context.push('/login_page/register_page');
@@ -84,11 +83,22 @@ class EmptyStateSection extends StatelessWidget {
               foregroundColor: background,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             ),
-            child: const CustomTextStyle(
-              text: 'Create a free account',
-
-              fontSize: 13,
-              decoration: TextDecoration.underline,
+            child: RichText(
+              text: TextSpan(
+                style: const TextStyle(fontSize: 13, color: Colors.white),
+                children: [
+                  const TextSpan(text: "Don't have an account? "),
+                  TextSpan(
+                    text: 'Create a free account→',
+                    style: TextStyle(
+                      color: context.primary,
+                      fontWeight: FontWeight.w600,
+                      decoration: TextDecoration.underline,
+                      decorationColor: context.primary.withValues(alpha: 0.4),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
 

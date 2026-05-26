@@ -36,26 +36,34 @@ class TodayFeaturedBlog extends ConsumerWidget {
                 if (blogModel.thumbnail != null)
                   Stack(
                     children: [
-                      AspectRatio(
-                        aspectRatio: 16 / 9,
-                        child: ClipRRect(
-                          borderRadius: .circular(10),
-                          child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: blogModel.thumbnail!,
-                            placeholder: (context, url) =>
-                                const Center(child: CustomLoading()),
-                            // const Center(
-                            //   child: Icon(
-                            //     LucideIcons.image,
-                            //     color: Colors.white54,
-                            //   ),
-                            // ),
-                            errorWidget: (context, url, error) => const Center(
-                              child: Icon(
-                                LucideIcons.imageOff,
-                                color: Colors.redAccent,
-                              ),
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: card,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+
+                        child: AspectRatio(
+                          aspectRatio: 16 / 9,
+                          child: ClipRRect(
+                            borderRadius: .circular(10),
+                            child: CachedNetworkImage(
+                              fit: BoxFit.cover,
+                              imageUrl: blogModel.thumbnail!,
+                              placeholder: (context, url) =>
+                                  const Center(child: CustomLoading()),
+                              // const Center(
+                              //   child: Icon(
+                              //     LucideIcons.image,
+                              //     color: Colors.white54,
+                              //   ),
+                              // ),
+                              errorWidget: (context, url, error) =>
+                                  const Center(
+                                    child: Icon(
+                                      LucideIcons.imageOff,
+                                      color: Colors.redAccent,
+                                    ),
+                                  ),
                             ),
                           ),
                         ),

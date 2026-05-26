@@ -26,6 +26,8 @@ class AuthorsCard extends StatelessWidget {
               radius: 30,
               backgroundColor: card,
               child: CachedNetworkImage(
+                height: 60,
+                width: 60,
                 fit: .cover,
                 imageUrl:
                     'https://www.mamp.one/wp-content/uploads/2024/09/image-resources2.jpg',

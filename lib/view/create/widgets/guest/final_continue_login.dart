@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tech_node/core/constants/themes.dart';
 import 'package:tech_node/core/custom/custom_button.dart';
 import 'package:tech_node/core/custom/custom_text_style.dart';
-import 'package:tech_node/view/create/widgets/guest/gggggggggggg.dart';
 
 class FinalContinueLogin extends StatelessWidget {
   const FinalContinueLogin({super.key});
@@ -15,7 +14,7 @@ class FinalContinueLogin extends StatelessWidget {
       decoration: BoxDecoration(
         color: card,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: C.teal.withValues(alpha: 0.2)),
+        border: Border.all(color: context.primary.withValues(alpha: 0.2)),
       ),
       child: Column(
         children: [
@@ -24,7 +23,7 @@ class FinalContinueLogin extends StatelessWidget {
             width: 56,
             height: 56,
             decoration: BoxDecoration(
-              color: C.tealGlow,
+              color: context.primary,
               shape: BoxShape.circle,
               border: Border.all(color: context.primary.withValues(alpha: 0.3)),
               boxShadow: [

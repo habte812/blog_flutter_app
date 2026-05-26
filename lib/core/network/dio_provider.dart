@@ -12,7 +12,7 @@ final dioProvider = Provider<Dio>((ref) {
     aOptions: AndroidOptions(encryptedSharedPreferences: true),
   );
   final dio = Dio(
-    BaseOptions(
+    BaseOptions(  //192.168.0.184 //192.168.43.74
       baseUrl: 'http://192.168.0.184:8080/api/',
       connectTimeout: const Duration(seconds: 15),
       receiveTimeout: const Duration(seconds: 15),

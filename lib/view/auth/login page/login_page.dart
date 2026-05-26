@@ -103,7 +103,7 @@ class LoginPage extends HookConsumerWidget {
                       if (!context.mounted) return;
                       context.pushNamed('forgot_password');
                     },
-                    child:  CustomTextStyle(
+                    child: CustomTextStyle(
                       fontSize: 14,
                       text: "Forgot Password?",
                       textColor: context.primary,
@@ -118,6 +118,7 @@ class LoginPage extends HookConsumerWidget {
                     final theauth = ref.watch(authProvider);
                     return CustomButton(
                       onPressed: () {
+                        FocusManager.instance.primaryFocus?.unfocus();
                         if (globaKey.currentState!.validate()) {
                           final authRepo = ref.read(authRepositoryProvider);
                           ref
@@ -153,7 +154,7 @@ class LoginPage extends HookConsumerWidget {
 
                     TextButton(
                       onPressed: () => context.pushReplacementNamed('register'),
-                      child:  CustomTextStyle(
+                      child: CustomTextStyle(
                         text: "Sign Up",
                         fontSize: 14,
                         textColor: context.primary,

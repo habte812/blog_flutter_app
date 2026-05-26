@@ -1,4 +1,7 @@
 
+enum PaginationStatus { idle, loading, loadingMore, success, failure }
+
+
 class PaginatedResponseModel<T> {
   final List<T> data;
   final String? nextCursor;

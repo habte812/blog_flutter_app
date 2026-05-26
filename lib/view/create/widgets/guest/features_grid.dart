@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tech_node/core/constants/themes.dart';
 import 'package:tech_node/core/custom/custom_text_style.dart';
-import 'package:tech_node/view/create/widgets/guest/ututututu.dart';
+import 'package:tech_node/view/create/widgets/guest/section_label.dart';
 
 class FeaturesGrid extends StatelessWidget {
   const FeaturesGrid({super.key});
@@ -119,7 +119,6 @@ class FeatureCard extends StatelessWidget {
             text: feature.desc,
             maxLine: 2,
             overflow: TextOverflow.ellipsis,
-            fontFamily: 'Georgia',
             fontSize: 12,
             textColor: const Color.fromARGB(255, 138, 143, 168),
           ),

@@ -113,7 +113,7 @@ class SettingPage extends StatelessWidget {
         ),
         SettingsTileBuilder(
           icon: Icons.info_outline,
-          title: "About App",
+          title: "About BlogNode",
           onTap: () {},
         ),
         const SettingsTileBuilder(

@@ -65,10 +65,14 @@ class ViewAuthorProfile extends ConsumerWidget {
                       ),
                     ),
                     flexibleSpace: FlexibleSpaceBar(
+                      stretchModes: const [
+                        StretchMode.zoomBackground,
+                        StretchMode.blurBackground,
+                      ],
                       background: Stack(
                         fit: StackFit.expand,
                         children: [
-                           DecoratedBox(
+                          DecoratedBox(
                             decoration: BoxDecoration(color: context.primary),
                           ),
                           ProfileBioAndTotal(authorID: authorID),
@@ -205,11 +209,25 @@ class ProfileBioAndTotal extends ConsumerWidget {
 
 Widget _buildStatColumn(String label, String count) {
   return Expanded(
-    child: Column(
-      children: [
-        CustomTextStyle(text: count, fontSize: 18, fontWeight: FontWeight.bold),
-        CustomTextStyle(text: label, fontSize: 12, textColor: Colors.white54),
-      ],
+    child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {},
+        child: Column(
+          children: [
+            CustomTextStyle(
+              text: count,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+            CustomTextStyle(
+              text: label,
+              fontSize: 12,
+              textColor: Colors.white54,
+            ),
+          ],
+        ),
+      ),
     ),
   );
 }

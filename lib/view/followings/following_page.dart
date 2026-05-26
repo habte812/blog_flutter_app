@@ -18,6 +18,10 @@ class FollowingPage extends HookConsumerWidget {
 
     if (authState == AuthStatus.unauthenticated) {
       return const FollowingGuestPage();
+    } else if (authState == AuthStatus.error) {
+      return const FollowingGuestPage();
+    }else if (authState == AuthStatus.loading) {
+      return const FollowingGuestPage();
     }
     return SafeArea(
       child: NotificationListener<ScrollNotification>(
