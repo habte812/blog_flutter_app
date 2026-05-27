@@ -42,7 +42,7 @@ final class MyPostedBlogsNotifierProvider
 }
 
 String _$myPostedBlogsNotifierHash() =>
-    r'10b5a36814f9b5b2d96ca36ef9c6711f2af173d6';
+    r'c32a6f3d4434065c5ebeff98a97e93785bf05267';
 
 abstract class _$MyPostedBlogsNotifier extends $Notifier<MyPostedBlogsState> {
   MyPostedBlogsState build();

@@ -107,10 +107,11 @@ final GoRouter appRoutes = GoRouter(
       ],
     ),
     GoRoute(
-      path: '/detail-posts/:id',
+      path: '/detail-posts/:id/:blogUserId',
       builder: (context, state) {
         final id = state.pathParameters['id'] ?? 'none';
-        return DetailPostPage(postId: id);
+        final blogUserId = state.pathParameters['blogUserId'] ?? 'none';
+        return DetailPostPage(postId: id, blogUserId: int.parse(blogUserId));
       },
     ),
     GoRoute(

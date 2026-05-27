@@ -36,7 +36,7 @@ class FollowingBlogsList extends ConsumerWidget {
         }
 
         if (!state.isLoading && state.items.isEmpty) {
-          const CustomEmptyState(
+        return  const CustomEmptyState(
             title: "No blogs from your network yet",
             description:
                 "Start following authors to get updates on their latest blogs",

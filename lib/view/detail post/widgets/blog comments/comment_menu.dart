@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:tech_node/core/constants/themes.dart';
-import 'package:tech_node/core/custom/custom_sacffold_message.dart';
 import 'package:tech_node/core/custom/custom_text_style.dart';
 import 'package:tech_node/data/model/comment/blog_comment_model.dart';
 import 'package:tech_node/data/viewModel/blog%20comments/comments_notifier.dart';
@@ -13,15 +12,15 @@ class CommentMenu extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(commentsProvider(comment.id.toString()), (prev, nex) {
-      if (prev is AsyncData && nex is AsyncError) {
-        CustomScaffoldMessage.show(
-          context,
-          message: nex.error.toString(),
-          isError: true,
-        );
-      }
-    });
+    // ref.listen(fetchBlogCommentsProvider(comment.id.toString()), (prev, nex) {
+    //   if (prev is AsyncData && nex is AsyncError) {
+    //     CustomScaffoldMessage.show(
+    //       context,
+    //       message: nex.error.toString(),
+    //       isError: true,
+    //     );
+    //   }
+    // });
     return PopupMenuButton<String>(
       tooltip: 'menu',
       color: background.withValues(alpha: 1),
@@ -43,12 +42,11 @@ class CommentMenu extends ConsumerWidget {
         if (!context.mounted) return;
         if (value == "delete") {
           ref
-              .read(commentsProvider(comment.postId.toString()).notifier)
+              .read(fetchBlogCommentsProvider(comment.postId.toString()).notifier)
               .deleteMyComment(
                 commentId: comment.id,
                 parentId: comment.parentId,
               );
-          debugPrint("------------------->>>>>>>>>>>>>>> ${comment.parentId}");
         }
       },
       itemBuilder: (context) => [

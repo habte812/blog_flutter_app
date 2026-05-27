@@ -7,20 +7,26 @@ import 'package:tech_node/core/constants/themes.dart';
 import 'package:tech_node/core/custom/custom_sacffold_message.dart';
 import 'package:tech_node/core/custom/custom_text_style.dart';
 import 'package:tech_node/data/model/comment/blog_comment_model.dart';
-import 'package:tech_node/view/detail%20post/widgets/blog%20comments/comment_menu.dart';
 import 'package:tech_node/view/detail%20post/widgets/blog%20comments/provider/active%20reply/active_reply_notifier.dart';
 import 'package:tech_node/view/detail%20post/widgets/blog%20comments/provider/expande_replies_notifier.dart';
 import 'package:tech_node/view/detail%20post/widgets/blog%20comments/replies_comment_list.dart';
+import 'package:tech_node/view/detail%20post/widgets/blog%20comments/widgets/users_name_header.dart';
 
 class BlogCommentsUi extends StatelessWidget {
   final BlogCommentModel comment;
   final int depth;
-  const BlogCommentsUi({super.key, required this.comment, this.depth = 0});
+  final int blogUserId;
+  const BlogCommentsUi({
+    super.key,
+    required this.comment,
+    this.depth = 0,
+    required this.blogUserId,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: depth > 0 ? 12 : 0, bottom: 4),
+      margin: EdgeInsets.only(left: depth > 0 ? 5 : 0, bottom: 4),
       child: Column(
         crossAxisAlignment: .start,
         children: [
@@ -35,7 +41,7 @@ class BlogCommentsUi extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: .start,
                     children: [
-                      _buildHeader(),
+                      UsersNameHeader(comment: comment, blogUserId: blogUserId),
                       _buildCommentBody(),
                       const SizedBox(height: 12),
                       _buildActionRow(),
@@ -45,7 +51,7 @@ class BlogCommentsUi extends StatelessWidget {
               ],
             ),
           ),
-          RepliesCommentList(comment: comment),
+          RepliesCommentList(comment: comment, blogUserId: blogUserId),
         ],
       ),
     );
@@ -71,43 +77,6 @@ class BlogCommentsUi extends StatelessWidget {
               : null,
         ),
       ),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Row(
-      crossAxisAlignment: .start,
-      mainAxisAlignment: .start,
-      mainAxisSize: .min,
-      children: [
-        Column(
-          crossAxisAlignment: .start,
-          mainAxisAlignment: .start,
-          mainAxisSize: .min,
-          children: [
-            GestureDetector(
-              onTap: () {
-                debugPrint(
-                  '------------>>>>>>>>>>>>>>>>>${DateTime.now().millisecondsSinceEpoch - 100000}',
-                );
-              },
-              child: CustomTextStyle(
-                text: comment.writer.name,
-                fontWeight: .w700,
-                fontSize: 13,
-                textColor: Colors.white.withValues(alpha: 0.9),
-              ),
-            ),
-            CustomTextStyle(
-              text: comment.createdAt,
-              fontSize: 11,
-              textColor: Colors.white38,
-            ),
-          ],
-        ),
-        const Spacer(),
-        CommentMenu(comment: comment),
-      ],
     );
   }
 
@@ -181,11 +150,13 @@ class BlogCommentsUi extends StatelessWidget {
                     : LucideIcons.chevronDown,
                 label:
                     "${comment.totalReplies} ${comment.totalReplies == 1 ? 'reply' : 'replies'}",
-                onTap: () => ref
-                    .read(
-                      expandeRepliesProvider(comment.id.toString()).notifier,
-                    )
-                    .toggle(),
+                onTap: () {
+                  ref
+                      .read(
+                        expandeRepliesProvider(comment.id.toString()).notifier,
+                      )
+                      .toggle();
+                },
               ),
           ],
         );
@@ -210,24 +181,26 @@ class ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      behavior: .opaque,
-      child: Row(
-        mainAxisSize: .min,
-        children: [
-          Icon(icon, size: 14, color: textColor ?? Colors.white38),
-          const SizedBox(width: 6),
-          Text(
-            label,
-            style: TextStyle(
-              color: textColor ?? Colors.white38,
-              fontSize: 12,
-              fontWeight: .w600,
-              letterSpacing: 0.2,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        child: Row(
+          mainAxisSize: .min,
+          children: [
+            Icon(icon, size: 14, color: textColor ?? Colors.white38),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: TextStyle(
+                color: textColor ?? Colors.white38,
+                fontSize: 12,
+                fontWeight: .w600,
+                letterSpacing: 0.2,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

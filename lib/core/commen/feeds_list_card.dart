@@ -23,7 +23,7 @@ class FeedsListCard extends ConsumerWidget {
         highlightColor: card,
         onTap: () {
           if (!context.mounted) return;
-          context.push('/detail-posts/${blogModel.id}');
+          context.push('/detail-posts/${blogModel.id}/${blogModel.author.id}');
           ref.read(addBlogViewProvider(id: blogModel.id.toString()));
         },
         child: Container(

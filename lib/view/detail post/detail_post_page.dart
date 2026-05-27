@@ -19,7 +19,8 @@ import 'package:tech_node/core/custom/custom_error_notifier.dart';
 
 class DetailPostPage extends ConsumerWidget {
   final String postId;
-  const DetailPostPage({super.key, required this.postId});
+  final int blogUserId;
+  const DetailPostPage({super.key, required this.postId, required this.blogUserId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -159,7 +160,7 @@ class DetailPostPage extends ConsumerWidget {
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
                       ),
-                      child: CommentSheetUi(postId: postId),
+                      child: CommentSheetUi(postId: postId, blogUserId:blogUserId ),
                     );
                   },
                   icon: const Icon(LucideIcons.messageSquare, size: 20),

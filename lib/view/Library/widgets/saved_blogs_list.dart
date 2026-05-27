@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tech_node/core/commen/feeds_list_card.dart';
-import 'package:tech_node/core/custom/custom_banner_card.dart';
 import 'package:tech_node/core/custom/custom_bottom_loader.dart';
 import 'package:tech_node/core/custom/custom_empty_state.dart';
 import 'package:tech_node/core/custom/custom_error_notifier.dart';
@@ -48,7 +47,7 @@ class SavedBlogsList extends ConsumerWidget {
         }
 
         if (!state.isLoading && state.savedblogs.isEmpty) {
-          Padding(
+        return  Padding(
             padding: .only(top: MediaQuery.of(context).size.height * 0.12),
             child: const CustomEmptyState(
               description:

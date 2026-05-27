@@ -1,7 +1,7 @@
 import 'package:tech_node/data/model/comment/blog_comment_model.dart';
 import 'package:tech_node/data/model/pagination/paginated_response_model.dart';
 
-class CommentsPaginationModel {
+class CommentRepliesState {
   
   final List<BlogCommentModel> comments;
   final String? nextCursor;
@@ -9,7 +9,7 @@ class CommentsPaginationModel {
   final PaginationStatus status;
   final String? errorMessage;
 
-  const CommentsPaginationModel({
+  const CommentRepliesState({
     this.comments = const [],
     this.nextCursor,
     this.hasMorePages = false,
@@ -20,7 +20,7 @@ class CommentsPaginationModel {
   bool get isLoadingMore => status == PaginationStatus.loadingMore;
   bool get isFailure => status == PaginationStatus.failure;
 
-  CommentsPaginationModel copyWith({
+  CommentRepliesState copyWith({
     List<BlogCommentModel>? comments,
     String? nextCursor,
     bool? hasMorePages,
@@ -29,7 +29,7 @@ class CommentsPaginationModel {
     bool clearError = false,
     bool clearCursor = false,
 
-  }){return CommentsPaginationModel(
+  }){return CommentRepliesState(
     comments: comments ?? this.comments,
     nextCursor: clearCursor? null :(nextCursor ?? this.nextCursor),
     hasMorePages: hasMorePages?? this.hasMorePages,

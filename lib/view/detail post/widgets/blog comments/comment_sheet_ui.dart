@@ -7,7 +7,8 @@ import 'package:tech_node/view/detail%20post/widgets/blog%20comments/comments_li
 
 class CommentSheetUi extends StatelessWidget {
   final String postId;
-  const CommentSheetUi({super.key, required this.postId});
+  final int blogUserId;
+  const CommentSheetUi({super.key, required this.postId, required this.blogUserId});
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +16,14 @@ class CommentSheetUi extends StatelessWidget {
       children: [
         Consumer(
           builder: (context, ref, child) {
-            final addcomment = ref.watch(commentsProvider(postId));
+            final addcomment = ref.watch(fetchBlogCommentsProvider(postId));
             return addcomment.isLoading
                 ? const SizedBox(height: 1, child: CustomLineLoading())
                 : const Divider(height: 1);
           },
         ),
 
-        Expanded(child: CommentsList(postId: postId)),
+        Expanded(child: CommentsList(postId: postId,blogUserId:blogUserId)),
         CommentInputField(postId: postId),
       ],
     );

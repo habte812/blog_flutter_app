@@ -10,6 +10,7 @@ import 'package:tech_node/core/custom/custom_sacffold_message.dart';
 import 'package:tech_node/core/custom/custom_text_field.dart';
 import 'package:tech_node/core/custom/custom_text_style.dart';
 import 'package:tech_node/data/model/auth/auth_state.dart';
+import 'package:tech_node/data/model/pagination/paginated_response_model.dart';
 import 'package:tech_node/data/viewModel/auth/auth_notifier.dart';
 import 'package:tech_node/data/viewModel/blog%20comments/comments_notifier.dart';
 import 'package:tech_node/view/detail%20post/widgets/blog%20comments/provider/active%20reply/active_reply_notifier.dart';
@@ -50,16 +51,14 @@ class CommentInputField extends HookConsumerWidget {
         focusNode.requestFocus();
       }
     });
-    ref.listen(commentsProvider(postId), (prev, nex) {
-      nex.whenOrNull(
-        error: (e, s) {
-          CustomScaffoldMessage.show(
-            context,
-            message: e.toString(),
-            isError: true,
-          );
-        },
-      );
+    ref.listen(fetchBlogCommentsProvider(postId), (prev, nex) {
+      if (nex.status == PaginationStatus.failure) {
+        CustomScaffoldMessage.show(
+          context,
+          message: nex.errorMessage.toString(),
+          isError: true,
+        );
+      }
     });
     final isValid = useListenableSelector(
       controller,
@@ -146,7 +145,9 @@ class CommentInputField extends HookConsumerWidget {
               const SizedBox(width: 8),
               Consumer(
                 builder: (context, ref, child) {
-                  final addcomment = ref.watch(commentsProvider(postId));
+                  final addcomment = ref.watch(
+                    fetchBlogCommentsProvider(postId),
+                  );
                   return IconButton.filled(
                     style: ButtonStyle(
                       backgroundColor: WidgetStateProperty.all(
@@ -156,7 +157,9 @@ class CommentInputField extends HookConsumerWidget {
                     onPressed: isValid || addcomment.isLoading
                         ? () {
                             ref
-                                .read(commentsProvider(postId).notifier)
+                                .read(
+                                  fetchBlogCommentsProvider(postId).notifier,
+                                )
                                 .addComment(
                                   content: controller.text.trim(),
 

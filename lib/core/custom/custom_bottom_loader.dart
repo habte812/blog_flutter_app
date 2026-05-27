@@ -7,25 +7,27 @@ class CustomBottomLoader extends StatelessWidget {
   final bool hasMorePages;
   final String endTitle;
   final bool isEmpty;
+  final Widget? loaderSize;
   const CustomBottomLoader({
     super.key,
     required this.isLoadingMore,
     required this.hasMorePages,
     required this.endTitle,
     required this.isEmpty,
+    this.loaderSize
   });
   @override
   Widget build(BuildContext context) {
     if (isLoadingMore) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 24),
-        child: Center(child: CustomLoading()),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: loaderSize ?? const Center(child: CustomLoading()),
       );
     }
 
     if (!hasMorePages && !isEmpty) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 28),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         child: Center(
           child: CustomTextStyle(
             text: endTitle,
