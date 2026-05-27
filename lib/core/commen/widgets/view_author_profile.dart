@@ -143,56 +143,57 @@ class ProfileBioAndTotal extends ConsumerWidget {
               mainAxisAlignment: .center,
               children: [
                 const SizedBox(height: 20),
-                ClipRRect(
-                  borderRadius: .circular(45),
-                  child: CircleAvatar(
-                    radius: 45,
-                    backgroundColor: card,
-                    child: user.profileImage == null
-                        ? const Icon(
-                            LucideIcons.user,
-                            color: Colors.white54,
-                            size: 45,
-                          )
-                        : CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: user.profileImage!,
-                            placeholder: (context, url) => const Center(
-                              child: Icon(
+                Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: .circular(45),
+                      child: CircleAvatar(
+                        radius: 45,
+                        backgroundColor: card,
+                        child: user.profileImage == null
+                            ? const Icon(
                                 LucideIcons.user,
                                 color: Colors.white54,
                                 size: 45,
+                              )
+                            : CachedNetworkImage(
+                                fit: BoxFit.cover,
+                                imageUrl: user.profileImage!,
+                                placeholder: (context, url) => const Center(
+                                  child: Icon(
+                                    LucideIcons.user,
+                                    color: Colors.white54,
+                                    size: 45,
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    const Center(
+                                      child: Icon(
+                                        LucideIcons.user,
+                                        color: Colors.redAccent,
+                                        size: 45,
+                                      ),
+                                    ),
                               ),
-                            ),
-                            errorWidget: (context, url, error) => const Center(
-                              child: Icon(
-                                LucideIcons.user,
-                                color: Colors.redAccent,
-                                size: 45,
-                              ),
-                            ),
-                          ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: .center,
-                  crossAxisAlignment: .center,
-                  mainAxisSize: .min,
-                  children: [
-                    CustomTextStyle(
-                      text: user.userName,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    const SizedBox(width: 3),
                     if (user.userRole == 'admin' || user.userRole == 'author')
-                      const Icon(
-                        Icons.verified_sharp,
-                        color: Colors.white,
-                        size: 20,
+                      const Positioned(
+                        bottom: 0,
+                        right: 5,
+                        child: Icon(
+                          Icons.verified_sharp,
+                          color: Colors.white,
+                          size: 20,
+                        ),
                       ),
                   ],
+                ),
+                const SizedBox(height: 10),
+                CustomTextStyle(
+                  text: user.userName,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
                 if (user.userBio != null)
                   CustomTextStyle(

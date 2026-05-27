@@ -5,8 +5,8 @@ import 'package:tech_node/core/custom/custom_bottom_loader.dart';
 import 'package:tech_node/core/custom/custom_empty_state.dart';
 import 'package:tech_node/core/custom/custom_error_notifier.dart';
 import 'package:tech_node/core/custom/custom_shimmer_loading.dart';
-import 'package:tech_node/data/viewModel/blog/follow%20author/follow_notifier.dart';
 import 'package:tech_node/view/Library/widgets/saved_blogs_list.dart';
+import '../../../../data/viewModel/blog/follow author/follow_notifier.dart';
 
 class FollowingBlogsList extends ConsumerWidget {
   const FollowingBlogsList({super.key});
@@ -16,7 +16,6 @@ class FollowingBlogsList extends ConsumerWidget {
     return Consumer(
       builder: (context, ref, child) {
         final state = ref.watch(myFollowingBlogsProvider);
-
         if (state.isLoading && state.items.isEmpty) {
           return ListView.builder(
             itemCount: 5,
@@ -27,11 +26,20 @@ class FollowingBlogsList extends ConsumerWidget {
             },
           );
         }
+
         if (state.isFailure && state.items.isEmpty) {
           return CustomErrorNotifier(
             errorMessage: state.errorMessage ?? 'Something went wrong.',
             action: () =>
                 ref.read(myFollowingBlogsProvider.notifier).firstFetchSaved(),
+          );
+        }
+
+        if (!state.isLoading && state.items.isEmpty) {
+          const CustomEmptyState(
+            title: "No blogs from your network yet",
+            description:
+                "Start following authors to get updates on their latest blogs",
           );
         }
         return Column(
@@ -45,12 +53,6 @@ class FollowingBlogsList extends ConsumerWidget {
                 return FeedsListCard(blogModel: state.items[index]);
               },
             ),
-            if (!state.isLoading && state.items.isEmpty)
-              const CustomEmptyState(
-                title: "No blogs from your network yet",
-                description:
-                    "Start following authors to get updates on their latest blogs",
-              ),
             if (state.errorMessage != null &&
                 state.items.isNotEmpty &&
                 !state.isLoadingMore)

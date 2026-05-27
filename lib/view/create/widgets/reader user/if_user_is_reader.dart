@@ -7,7 +7,6 @@ import 'package:tech_node/core/custom/custom_sacffold_message.dart';
 import 'package:tech_node/core/custom/custom_text_style.dart';
 import 'package:tech_node/data/model/auth/auth_state.dart';
 import 'package:tech_node/data/viewModel/auth/auth_notifier.dart';
-import 'package:tech_node/data/viewModel/user/user_notifier.dart';
 import 'package:tech_node/view/create/widgets/reader%20user/author_process_steps.dart';
 import 'package:tech_node/view/create/widgets/reader%20user/reader_user_app_bar.dart';
 import 'package:tech_node/view/create/widgets/reader%20user/what_you_get_after.dart';
